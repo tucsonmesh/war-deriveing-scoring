@@ -40,6 +40,7 @@ interface Maximums {
 type MeasurementRow = [
   string, // ID
   string, // team name
+  string, // supernode
   number, // signal strength
   string, // location
   string, // vibes
@@ -55,6 +56,7 @@ type MeasurementRow = [
  */
 interface Measurement {
   teamName: string;
+  supernode: string;
   signalStrength: number;
   blockGroup: string;
   supernodeDistance: number;
@@ -185,14 +187,15 @@ function parseMeasurement(measurementRaw: MeasurementRow): Measurement {
   return {
     // ID is index 0
     teamName: measurementRaw[1],
-    signalStrength: measurementRaw[2],
-    // Location is index 3
-    // Vibes is index 4
-    // LiteBeam admin screenshot is index 5
-    // Line of sight photo is index 6
-    blockGroup: measurementRaw[7],
-    supernodeDistance: measurementRaw[8],
-    subjectiveBonuses: parseCategories(measurementRaw[9]),
+    supernode: measurementRaw[2],
+    signalStrength: measurementRaw[3],
+    // Location is index 4
+    // Vibes is index 5
+    // LiteBeam admin screenshot is index 6
+    // Line of sight photo is index 7
+    blockGroup: measurementRaw[8],
+    supernodeDistance: measurementRaw[9],
+    subjectiveBonuses: parseCategories(measurementRaw[10]),
   };
 }
 
