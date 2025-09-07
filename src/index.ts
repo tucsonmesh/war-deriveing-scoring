@@ -24,17 +24,6 @@ interface TeamScore {
 }
 
 /**
- * Maximum values for various score components.
- */
-interface Maximums {
-  nBlockGroups: number;
-  nMeasurements: number;
-  maxSupernodeDistance: number;
-  maxSignalStrength: number;
-  minSignalStrength: number;
-}
-
-/**
  * A raw signal strength measurement from the Google Sheet.
  */
 type MeasurementRow = [
@@ -61,6 +50,17 @@ interface Measurement {
   blockGroup: string;
   supernodeDistance: number;
   subjectiveBonuses: string[];
+}
+
+/**
+ * Maximum values for various score components.
+ */
+interface Maximums {
+  nBlockGroups: number;
+  nMeasurements: number;
+  maxSupernodeDistance: number;
+  maxSignalStrength: number;
+  minSignalStrength: number;
 }
 
 // Constants for different scoring elements
@@ -200,13 +200,11 @@ function parseMeasurement(measurementRaw: MeasurementRow): Measurement {
 }
 
 /**
- * Calculates the score for each team in a list of measurements.
- *
- * @param {Array<Array<object>>} measurements Range of measurements.
- * @return {Array<Array<object>>} Scores for each team.
- * @customfunction
+ * Get initial team scores.
  */
-export function WARSCORE(measurements: MeasurementRow[]): [string, number][] {
+export function getInitialTeamScores(
+  measurements: MeasurementRow[]
+): TeamScore[] {
   const scoreMap = measurements.reduce((scores, measurementRaw) => {
     const measurement = parseMeasurement(measurementRaw);
 
@@ -257,11 +255,11 @@ export function WARSCORE(measurements: MeasurementRow[]): [string, number][] {
     return scores;
   }, new Map());
 
-  // @todo: Handle additional aggregate bonuses:
-  // Furthest distance between any two measurements - This one's probably too computationally difficult
-  // Furthest distance from another team's measurement - This one also might be too much to compute
+  return Array.from(scoreMap.values());
+}
 
-  const maxValues = Array.from(scoreMap.values()).reduce(
+export function getMaximums(scores: TeamScore[]): Maximums {
+  return scores.reduce(
     (maximums: Maximums, teamScore: TeamScore) => {
       const newMaximums = { ...maximums };
 
@@ -296,9 +294,14 @@ export function WARSCORE(measurements: MeasurementRow[]): [string, number][] {
       minSignalStrength: 0,
     }
   );
+}
+
+export function assignAggBonuses(scores: TeamScore[]): TeamScore[] {
+  const finalScores = [];
+  const maxValues = getMaximums(scores);
 
   // Assign the aggregate bonuses
-  for (const teamScore of scoreMap.values()) {
+  for (const teamScore of scores) {
     if (teamScore.blockGroups.size === maxValues.nBlockGroups) {
       teamScore.total += POINTS_BY_TYPE.MOST_BLOCK_GROUPS;
     }
@@ -318,10 +321,29 @@ export function WARSCORE(measurements: MeasurementRow[]): [string, number][] {
     if (teamScore.maxSignalStrength === maxValues.maxSignalStrength) {
       teamScore.total += POINTS_BY_TYPE.MAX_SIGNAL_STRENGTH;
     }
+
+    finalScores.push(teamScore);
   }
 
+  return finalScores;
+}
+
+/**
+ * Calculates the score for each team in a list of measurements.
+ *
+ * @param {Array<Array<object>>} measurements Range of measurements.
+ * @return {Array<Array<object>>} Scores for each team.
+ * @customfunction
+ */
+export function WARSCORE(measurements: MeasurementRow[]): [string, number][] {
+  const scores = assignAggBonuses(getInitialTeamScores(measurements));
+
+  // @todo: Handle additional aggregate bonuses:
+  // Furthest distance between any two measurements - This one's probably too computationally difficult
+  // Furthest distance from another team's measurement - This one also might be too much to compute
+
   // Sort scores in descending order and convert to a 2D array
-  return [...scoreMap.values()]
+  return scores
     .sort((a, b) => b.total - a.total)
     .map(score => [score.teamName, score.total]);
 }
