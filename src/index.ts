@@ -13,7 +13,7 @@ import { Feature, FeatureCollection, Point, Polygon } from 'geojson';
  * A team's score and information needed to calculate bonuses based on
  * comparisons with other teams.
  */
-interface TeamScore {
+export interface TeamScore {
   teamName: string;
   total: number;
   nMeasurements: number;
@@ -26,7 +26,7 @@ interface TeamScore {
 /**
  * A raw signal strength measurement from the Google Sheet.
  */
-type MeasurementRow = [
+export type MeasurementRow = [
   string, // ID
   string, // team name
   string, // supernode
