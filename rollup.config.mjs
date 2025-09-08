@@ -35,7 +35,7 @@ const stripFinalExport = () => {
     name: 'strip-final-export',
     async renderChunk(code) {
       // Strip final export statement
-      return code.replace(/\nexport\s+\{.*\};/gm, '');
+      return code.replace(/\nexport\s+{(?:\n?.*)*};/gm, '');
     },
   };
 };
