@@ -70,28 +70,41 @@ const GOOD_SIGNAL_THRESHOLD = -70;
 const POINTS_BY_TYPE: Record<string, number> = {
   'MEASUREMENT': 10,
   'GOOD_SIGNAL': 10,
-  'MOST_MEASUREMENTS': 25,
+  'MOST_MEASUREMENTS': 30,
   'MANY_AREAS': 40,
   'MOST_BLOCK_GROUPS': 50,
-  'MAX_SUPERNODE_DISTANCE': 25,
-  'MAX_SIGNAL_STRENGTH': 50,
+  'MAX_SUPERNODE_DISTANCE': 20,
+  'MAX_SIGNAL_STRENGTH': 20,
 
   // Subjective bonuses
   // These keys should match the options in the spreadsheet
+  // no injuries, no vehicle accidents
+  'Safety': 50,
   // Measurement of -70 or better for both Tucson House and BICAS
   'Twin Towers': 50,
+  // At least 4 measurements more than .5 miles from each other
+  'Four Dispersed Measurements': 40,
+  // Furthest distance between any two measurements
+  'Furthest Distance Between Two Measurements': 20,
+  // Furthest distance from any other team's measurement
+  'Furthest Distance from Another Team Measurement': 20,
   // Most unhinged method of making a measurement
-  'Most Unhinged Method': 25,
-  'Longest Dance Party/Karaoke': 50,
+  // "Awarded per team by High Judge of the War Derive"
+  'Most Unhinged Method': 0,
+  'Longest Dance Party/Karaoke': 20,
+  'Coolest Object': 20,
+  'Worst Connection': 20,
   // Got address and contact information for someone interested in Tucson Mesh
-  'Location & Contact Info': 25,
+  'Location & Contact Info': 30,
   // Measurement taken by team traveling without using fossil fuels: EV, ebike, hoverboard
-  'No Fossil Fuels': 20,
+  'No Fossil Fuels': 40,
   // Measurement taken by team traveling only human power: walking, skateboard, bicycle, etc.
-  'Human Powered': 20,
+  //'Human Powered': 20,
   // Measurement locations make a design
-  'Best Pattern Made from Reading Points': 50,
-  'Best Side Quest': 30,
+  // "Awarded per team by High Judge of the War Derive"
+  'Best Pattern Made from Reading Points': 0,
+  // "Awarded per team by High Judge of the War Derive"
+  'Best Side Quest': 0,
   'Hit Others with Water Gun': 10,
   'Hit Equipment with Water Gun': -10,
   'Trespassing Ticket': 30,

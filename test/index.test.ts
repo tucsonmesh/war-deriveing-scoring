@@ -204,8 +204,8 @@ describe('index', () => {
       expect(teamScore.total).toBe(
         10 + // measurement
           10 + // good signal bonus
-          50 + // Longest Dance Party/Karaoke bonus
-          25 // Location & Contact info bonus
+          20 + // Longest Dance Party/Karaoke bonus
+          30 // Location & Contact info bonus
       );
     });
 
