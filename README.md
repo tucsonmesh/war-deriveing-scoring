@@ -10,6 +10,7 @@ It relies on the [aside](https://github.com/google/aside) and [clasp](https://gi
 
 - Node.js. I developed this using Node.js version 22.18.0.
 - Google Apps Script API is enabled. You can enabled this [here](https://script.google.com/home/usersettings).
+- `clasp-prod.json`. See example below.
 
 ## Install dependencies
 
@@ -44,3 +45,28 @@ npm run deploy:prod
 ## Additional tasks
 
 See npm scripts in `package.json`.
+
+## Example `clasp-prod.json`
+
+You should replace `YOUR_SCRIPT_ID`, with the ID in the URL, e.g. `https://script.google.com/u/0/home/projects/YOUR_SCRIPT_ID/edit`.
+
+
+```
+{
+  "scriptId": "YOUR_SCRIPT_ID",
+  "rootDir": "dist",
+  "scriptExtensions": [
+    ".js",
+    ".gs"
+  ],
+  "htmlExtensions": [
+    ".html"
+  ],
+  "jsonExtensions": [
+    ".json"
+  ],
+  "filePushOrder": [],
+  "skipSubdirectories": false
+}
+
+```
